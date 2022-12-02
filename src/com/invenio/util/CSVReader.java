@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Locale;
 
 import com.invenio.models.Header;
@@ -22,11 +23,14 @@ public class CSVReader {
 
 		File csvFile = new File("C:\\Users\\sweta.mishra\\Downloads\\read-file-java-poc1.csv");
 		BufferedReader br = new BufferedReader(new FileReader(csvFile));
+		HashMap<String,LineItems>lineMap=new HashMap<String,LineItems>();
 		String line = "";
 		try {
 			
 			while((line = br.readLine()) != null) {
 				String[] count = line.split(";");
+				//HashMap<String,LineItems> lineMap=new HashMap<String,LineItems>();
+
 				
 				if(count[0].equalsIgnoreCase("HAUDIT")) {
 					
@@ -42,8 +46,8 @@ public class CSVReader {
 					 
 					
 				}
-				else {
-					s
+				else if(count[0].equalsIgnoreCase("LINE")) {
+					
 					
 					LineItems lineItemsObject = new LineItems();
 					lineItemsObject.setRecordType(count[0]);
@@ -51,22 +55,21 @@ public class CSVReader {
 					lineItemsObject.setRefDocNum(count[2]);
 					lineItemsObject.setCity(count[3]);
 					lineItemsObject.setAmount(Float.parseFloat(count[4]));
-					System.out.println("Line: "+lineItemsObject);
+					lineMap.put(lineItemsObject.getRefDocNum(), lineItemsObject);
 					
 					
-					
-					
-					
-					
+				}
+				else {
+					System.out.println("It's not a haudit and line");
 					
 				}
 				
-				}
-		}catch (FileNotFoundException e) {
+			}
+			System.out.println("HashMap: "+lineMap);
+		}
+		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
-	
 
 	}
 
